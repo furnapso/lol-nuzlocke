@@ -1,8 +1,15 @@
 {
-    "python.linting.enabled": true,
-    "python.linting.lintOnSave": true,
-    "python.linting.pylintEnabled": true,
-    "python.linting.flake8Enabled": true,
-    "python.formatting.provider": "black",
-    "editor.formatOnSave": true
+  "python.linting.enabled": true,
+  "python.linting.lintOnSave": true,
+  "python.linting.pylintEnabled": true,
+  "python.linting.flake8Enabled": true,
+  "python.formatting.provider": "black",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true
+  },
+  "mypy.enabled": false,
+  "editor.defaultFormatter": "ms-python.black-formatter",
+  "code-runner.executorMap": { "python": "$pythonPath $fullFileName" },
+  "flake8.args": ["--ignore=E501"]
 }
