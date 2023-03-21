@@ -22,17 +22,32 @@ lol = LolWatcher(RIOT_API_KEY)
 
 
 @app.get("/champions")
-async def champions(region):
-    versions = lol.data_dragon.versions_for_region(region)
-    champions_version = versions["n"]["champion"]
-    return lol.data_dragon.champions(champions_version)
+async def champions():
+    return get_champions_for_latest_version()
 
 
 @app.get("/summonerChampions")
 async def summoner_champions(region: str, summoner_name: str):
     summoner = lol.summoner.by_name(region, summoner_name)
     summoner_id = summoner["id"]
-    return lol.champion_mastery.by_summoner("oc1", summoner_id)
+    return lol.champion_mastery.by_summoner(region, summoner_id)
+
+
+def get_champions_for_latest_version():
+    version = lol.data_dragon.versions_all()[0]
+    return lol.data_dragon.champions(version)
+
+
+def build_champion_id_map(champions):
+    id_map = {}
+
+    if "data" in champions.keys():
+        champions = champions["data"]
+
+    for key, value in champions.items():
+        id_map[int(value["key"])] = key
+
+    return id_map
 
 
 # @app.get("/championImage")
@@ -41,6 +56,4 @@ async def summoner_champions(region: str, summoner_name: str):
 
 
 if __name__ == "__main__":
-    profile_icons = lol.data_dragon.profile_icons
-    print("Hello")
-    # uvicorn.run(app, host="localhost", port=8000)
+    uvicorn.run(app, host="localhost", port=8000)
