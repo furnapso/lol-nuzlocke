@@ -9,8 +9,8 @@ export class Champion extends React.Component {
   render() {
     const { name } = this.props;
     return (
-      <div class="box champion">
-        <p class="subtitle">{name}</p>
+      <div class="box champion is-clickable">
+        <p class="is-size-5">{name}</p>
       </div>
     );
   }
