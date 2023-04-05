@@ -1,3 +1,5 @@
+import logging
+import sys
 from os import environ
 
 import uvicorn
@@ -23,8 +25,11 @@ app.add_middleware(
 
 RIOT_API_KEY = environ.get("RIOT_API_KEY")
 lol = LolWatcher(RIOT_API_KEY)
+logging.basicConfig(stream=sys.stdout, level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
+@cache
 @app.get("/champions")
 async def champions():
     return get_champions_for_latest_version()
