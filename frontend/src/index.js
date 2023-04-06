@@ -3,7 +3,9 @@ import ReactDOM from "react-dom/client";
 import ChampionContainer from "./components/championContainer";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
+import ErrorPage from "./routes/error";
 import Root from "./routes/root";
+import Rules from "./routes/rules";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
@@ -11,10 +13,15 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "/",
         element: <ChampionContainer />,
+      },
+      {
+        path: "/rules",
+        element: <Rules />,
       },
     ],
   },
