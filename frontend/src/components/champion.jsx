@@ -1,6 +1,6 @@
 import React from "react";
 
-export class Champion extends React.Component {
+export default class Champion extends React.Component {
   constructor(props) {
     super(props);
     this.state = { enabled: true };
