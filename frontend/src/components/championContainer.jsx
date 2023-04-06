@@ -1,5 +1,5 @@
 import React from "react";
-import { Champion } from "./champion";
+import Champion from "./champion";
 
 const baseUrl = "http://localhost:8000";
 
