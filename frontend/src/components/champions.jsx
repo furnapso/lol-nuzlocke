@@ -3,7 +3,7 @@ import { Champion } from "./champion";
 
 const baseUrl = "http://localhost:8000";
 
-export class ChampionContainer extends React.Component {
+export default class ChampionContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = { champions: {}, currentVersion: null };
