@@ -1,4 +1,5 @@
-import "bulma/css/bulma.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap";
 import { Outlet } from "react-router-dom";
 import Navbar from "../components/navbar.jsx";
 

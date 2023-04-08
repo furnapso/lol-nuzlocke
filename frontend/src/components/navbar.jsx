@@ -1,14 +1,34 @@
+import { LinkContainer } from "react-router-bootstrap";
+
 export default function Navbar() {
   return (
-    <nav class="navbar">
-      <div class="navbar-menu">
-        <div class="navbar-start">
-          <a class="navbar-item" href="/">
-            Home
-          </a>
-          <a class="navbar-item" href="/rules">
-            Rules
-          </a>
+    <nav class="navbar navbar-expand-lg mb-4 bg-body-secondary">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+          LoL Nuzlocke
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNavAltMarkup"
+          aria-controls="navbarNavAltMarkup"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div class="navbar-nav">
+            <LinkContainer to="/" className="nav-link">
+              <a class="nav-link">Home</a>
+            </LinkContainer>
+            <LinkContainer to="/rules" className="nav-link">
+              <a class="nav-link" href="/rules">
+                Rules
+              </a>
+            </LinkContainer>
+          </div>
         </div>
       </div>
     </nav>
