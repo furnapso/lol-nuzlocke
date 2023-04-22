@@ -1,16 +1,27 @@
+import { Link, MenuItem, Toolbar, Typography } from "@mui/material";
+import AppBar from "@mui/material/AppBar";
+
 export default function Navbar() {
   return (
-    <nav class="navbar">
-      <div class="navbar-menu">
-        <div class="navbar-start">
-          <a class="navbar-item" href="/">
+    <AppBar>
+      <Toolbar>
+        <MenuItem>
+          {" "}
+          <Typography variant="h6" component="div">
+            Lol NuzLocke
+          </Typography>
+        </MenuItem>
+        <MenuItem>
+          <Link href="/" color="inherit" underline="none" variant="button">
             Home
-          </a>
-          <a class="navbar-item" href="/rules">
+          </Link>
+        </MenuItem>
+        <MenuItem>
+          <Link href="/rules" color="inherit" underline="none" variant="button">
             Rules
-          </a>
-        </div>
-      </div>
-    </nav>
+          </Link>
+        </MenuItem>
+      </Toolbar>
+    </AppBar>
   );
 }

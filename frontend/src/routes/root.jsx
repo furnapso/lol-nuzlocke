@@ -1,20 +1,21 @@
-import "bulma/css/bulma.css";
-import { Outlet } from "react-router-dom";
-import Navbar from "../components/navbar.jsx";
+import { CssBaseline } from "@mui/material";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { Outlet } from "react-router";
+import Navbar from "../components/navbar";
 
-function Root() {
+const darkTheme = createTheme({
+  palette: {
+    mode: "dark",
+  },
+});
+
+export default function Root() {
   return (
-    <div>
-      <Navbar />
-      <div class="container is-max-desktop has-text-centered">
-        <h1 class="title">LoL Nuzlocke</h1>
-        <p class="subtitle">Play the League of Legends Nuzlocke Challenge!</p>
-      </div>
-      <div class="section">
-        <Outlet />
-      </div>
-    </div>
+    <ThemeProvider theme={darkTheme}>
+      <CssBaseline>
+        <Navbar></Navbar>
+        <Outlet></Outlet>
+      </CssBaseline>
+    </ThemeProvider>
   );
 }
-
-export default Root;
