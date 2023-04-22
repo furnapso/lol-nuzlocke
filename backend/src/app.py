@@ -2,6 +2,7 @@ import logging
 import sys
 from os import environ
 
+import community_dragon.api as data_dragon
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -32,7 +33,7 @@ logger = logging.getLogger(__name__)
 @cache
 @app.get("/champions")
 async def champions():
-    return get_champions_for_latest_version()
+    return data_dragon.get_champion_summary()
 
 
 @cache
@@ -41,32 +42,6 @@ async def summoner_champions(region: str, summoner_name: str):
     summoner = lol.summoner.by_name(region, summoner_name)
     summoner_id = summoner["id"]
     return lol.champion_mastery.by_summoner(region, summoner_id)
-
-
-@cache
-@app.get("/version")
-async def get_latest_version_endpoint():
-    return get_latest_version()
-
-
-def get_latest_version():
-    return lol.data_dragon.versions_all()[0]
-
-
-def get_champions_for_latest_version():
-    return lol.data_dragon.champions(get_latest_version())
-
-
-def build_champion_id_map(champions):
-    id_map = {}
-
-    if "data" in champions.keys():
-        champions = champions["data"]
-
-    for key, value in champions.items():
-        id_map[int(value["key"])] = key
-
-    return id_map
 
 
 @app.on_event("startup")
