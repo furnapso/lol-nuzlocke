@@ -10,7 +10,7 @@
   },
   "editor.defaultFormatter": "ms-python.black-formatter",
   "code-runner.executorMap": { "python": "$pythonPath $fullFileName" },
-  "flake8.args": ["--ignore=E501"],
+  "flake8.args": ["--ignore=E501,W503"],
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
