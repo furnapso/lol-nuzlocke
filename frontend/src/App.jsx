@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Champions from "./routes/champions";
 import Root from "./routes/root";
 import Rules from "./routes/rules";
 
@@ -14,6 +15,10 @@ const router = createBrowserRouter([
     path: "/",
     element: <Root></Root>,
     children: [
+      {
+        path: "/",
+        element: <Champions></Champions>,
+      },
       {
         path: "/rules",
         element: <Rules></Rules>,
