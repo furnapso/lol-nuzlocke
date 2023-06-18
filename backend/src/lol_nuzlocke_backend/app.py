@@ -1,6 +1,6 @@
 import community_dragon
 from fastapi import FastAPI
-from wiki.roles import ROLES
+from wiki.lanes import LANES
 
 app = FastAPI()
 
@@ -22,4 +22,4 @@ async def champion_icon(champion_id: int):
 
 @app.get("/championRoles")
 async def champion_roles():
-    return ROLES
+    return LANES

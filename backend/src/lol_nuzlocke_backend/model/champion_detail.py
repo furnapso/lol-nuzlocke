@@ -133,3 +133,4 @@ class ChampionDetail(BaseModel):
     skins: List[Skin]
     passive: Passive
     spells: List[Spell]
+    lanes: List[str] = []
