@@ -22,7 +22,7 @@ class Lanes(Enum):
 
 class ChampionLanes(BaseModel):
     champion_name: str
-    roles: List[str]
+    lanes: List[str]
 
 
 response = requests.get(LOL_WIKI_ROLES_PATH, timeout=REQUEST_TIMEOUT)
@@ -43,5 +43,5 @@ if response.status_code == 200:
                 if "data-sort-value" in cells[lane.value.row_index].attrs.keys():
                     champion_roles.append(lane.value.name)
             LANES.append(
-                ChampionLanes(champion_name=champion_name, roles=champion_roles)
+                ChampionLanes(champion_name=champion_name, lanes=champion_roles)
             )

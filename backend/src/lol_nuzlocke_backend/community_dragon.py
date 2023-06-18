@@ -30,7 +30,7 @@ def get_champion_detail(champion_id: int) -> ChampionDetail:
 
     for lane in LANES:
         if lane.champion_name.lower() == champion_detail.name.lower():
-            champion_detail.lanes = lane.roles
+            champion_detail.lanes = lane.lanes
 
     return champion_detail
 
