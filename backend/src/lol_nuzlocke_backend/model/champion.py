@@ -11,3 +11,4 @@ class Champion(BaseModel):
     alias: str
     squarePortraitPath: str
     roles: List[str]
+    lanes: List[str] = []

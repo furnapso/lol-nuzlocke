@@ -12,7 +12,7 @@ export default function Champion({ name, image, enabled, handleClick }) {
           height="50"
           width="50"
           style={style}
-          onClick={handleClick}
+          onClick={() => handleClick(name)}
         ></img>
       </a>
     </>

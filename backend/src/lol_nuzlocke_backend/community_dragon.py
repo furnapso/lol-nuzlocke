@@ -18,10 +18,14 @@ def get_champion_summary() -> List[Champion]:
 
     champions = parse_obj_as(List[Champion], response.json())
 
-    champions.pop(0)
+    if champions[0].id == -1:
+        champions.pop(0)
 
     for champion in champions:
         champion.squarePortraitPath = CHAMPION_ICON_PATH.format(champion.id)
+        for lane in LANES:
+            if lane.champion_name == champion.name:
+                champion.lanes = lane.lanes
 
     return champions
 
