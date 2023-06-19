@@ -135,10 +135,32 @@ function App() {
 
   useEffect(() => getData());
 
+  function reset() {
+    let _champions = champions.slice();
+    for (let i = 0; i < _champions.length; i++) {
+      _champions[i].enabled = true;
+      _champions[i].display = true;
+    }
+
+    let _roles = roles.slice();
+    for (let i = 0; i < _roles.length; i++) {
+      _roles[i].enabled = true;
+    }
+
+    setChampions(_champions);
+    setRoles(_roles);
+    setLocalStorageChampions(_champions);
+    setRolesLocalStorage();
+  }
+
   return (
     <>
       <NavBar></NavBar>
-      <Roles roles={roles} handleRoleClick={handleRoleClick}></Roles>
+      <Roles
+        roles={roles}
+        handleRoleClick={handleRoleClick}
+        handleResetClick={reset}
+      ></Roles>
       <hr className="uk-divider-icon"></hr>
       <Champions
         champions={champions}
