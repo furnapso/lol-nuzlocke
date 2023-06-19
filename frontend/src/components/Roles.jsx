@@ -1,5 +1,10 @@
 import Role from "./Role";
-export default function Roles({ roles, handleRoleClick, handleResetClick }) {
+export default function Roles({
+  roles,
+  handleRoleClick,
+  handleResetClick,
+  handleRollClick,
+}) {
   const roleComponents = roles.map((role) => (
     <Role
       key={role.name}
@@ -20,7 +25,12 @@ export default function Roles({ roles, handleRoleClick, handleResetClick }) {
         </div>
         <hr className="uk-divider-icon"></hr>
         <div className="uk-container uk-flex uk-flex-center">
-          <button className="uk-button uk-margin-right">Roll</button>
+          <button
+            className="uk-button uk-margin-right"
+            onClick={handleRollClick}
+          >
+            Roll
+          </button>
           <button
             className="uk-button uk-margin-left"
             onClick={handleResetClick}
