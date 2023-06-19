@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Role from "./Role";
 export default function Roles() {
-  let [roles, setRoles] = useState([
+  const defaultRoles = [
     {
       name: "Bottom",
       enabled: true,
@@ -32,7 +32,13 @@ export default function Roles() {
       imageEnabled: "src/assets/icon-position-utility.png",
       imageDisabled: "src/assets/icon-position-utility-disabled.png",
     },
-  ]);
+  ];
+
+  let localStorageRoles = localStorage.getItem("roles");
+
+  let [roles, setRoles] = useState(
+    localStorageRoles == null ? defaultRoles : JSON.parse(localStorageRoles)
+  );
 
   function handleClick(role) {
     let _roles = roles.slice();
@@ -48,18 +54,9 @@ export default function Roles() {
     setData();
   }
 
-  function getData() {
-    let localRoles = localStorage.getItem("roles");
-    if (localRoles != null) {
-      setRoles(JSON.parse(localRoles));
-    }
-  }
-
   function setData() {
     localStorage.setItem("roles", JSON.stringify(roles));
   }
-
-  useEffect(() => getData());
 
   const roleComponents = roles.map((role) => (
     <Role
@@ -74,12 +71,14 @@ export default function Roles() {
 
   return (
     <>
-      <h3 class="uk-text-center">Select Roles</h3>
-      <div class="uk-container uk-column">
-        <div class="uk-container uk-flex uk-flex-center">{roleComponents}</div>
-        <hr class="uk-divider-icon"></hr>
-        <div class="uk-container uk-flex uk-flex-center">
-          <button class="uk-button">Roll</button>
+      <h3 className="uk-text-center">Select Roles</h3>
+      <div className="uk-container uk-column">
+        <div className="uk-container uk-flex uk-flex-center">
+          {roleComponents}
+        </div>
+        <hr className="uk-divider-icon"></hr>
+        <div className="uk-container uk-flex uk-flex-center">
+          <button className="uk-button">Roll</button>
         </div>
       </div>
     </>

@@ -1,3 +1,4 @@
+import Champions from "./components/Champions";
 import NavBar from "./components/NavBar";
 import Roles from "./components/Roles";
 function App() {
@@ -5,6 +6,7 @@ function App() {
     <>
       <NavBar></NavBar>
       <Roles></Roles>
+      <Champions></Champions>
     </>
   );
 }

@@ -1,9 +1,20 @@
-export default function Champion({ name }) {
+export default function Champion({ name, image, enabled, handleClick }) {
+  const style = {
+    filter: enabled ? "grayscale(0)" : "grayscale(1)",
+  };
   return (
     <>
-      <div className="uk-card uk-card-body uk-card-default uk-width-1-6">
-        <h3 className="uk-card-title">{name}</h3>
-      </div>
+      <a>
+        <img
+          src={image}
+          alt={name}
+          title={name}
+          height="50"
+          width="50"
+          style={style}
+          onClick={handleClick}
+        ></img>
+      </a>
     </>
   );
 }

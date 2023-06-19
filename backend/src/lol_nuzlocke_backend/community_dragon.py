@@ -16,7 +16,14 @@ def get_champion_summary() -> List[Champion]:
             "Failed to get champion summary from community dragon"
         )
 
-    return parse_obj_as(List[Champion], response.json())
+    champions = parse_obj_as(List[Champion], response.json())
+
+    champions.pop(0)
+
+    for champion in champions:
+        champion.squarePortraitPath = CHAMPION_ICON_PATH.format(champion.id)
+
+    return champions
 
 
 def get_champion_detail(champion_id: int) -> ChampionDetail:

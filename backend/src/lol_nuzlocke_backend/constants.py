@@ -6,7 +6,8 @@ CHAMPION_DETAIL_PATH = (
     "/plugins/rcp-be-lol-game-data/global/default/v1/champions/{}.json"
 )
 CHAMPION_ICON_PATH = (
-    "/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/{}.png"
+    COMMUNITY_DRAGON_BASE_URL
+    + "/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/{}.png"
 )
 REQUEST_TIMEOUT = 30
 LOL_WIKI_ROLES_PATH = (
