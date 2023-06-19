@@ -1,4 +1,4 @@
-export default function RollResult({ champion, handleWin, handleLoss }) {
+export default function RollResult({ champion, handleLoss }) {
   const style = {
     filter: champion.enabled ? "grayscale(0)" : "grayscale(1)",
   };
@@ -8,7 +8,6 @@ export default function RollResult({ champion, handleWin, handleLoss }) {
         <h3 className="uk-title">{champion.name}</h3>
         <img src={champion.squarePortraitPath} style={style}></img>
         <div className="uk-container uk-margin uk-flex uk-flex-center uk-flex-space-between">
-          <button className="uk-button uk-button-primary">Win</button>
           <button
             className="uk-button uk-button-danger"
             onClick={() => handleLoss(champion.name)}
