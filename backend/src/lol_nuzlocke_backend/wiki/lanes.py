@@ -15,7 +15,7 @@ class Lane(NamedTuple):
 class Lanes(Enum):
     TOP = Lane("TOP", 1)
     JUNGLE = Lane("JUNGLE", 2)
-    MID = Lane("MID", 3)
+    MIDDLE = Lane("MIDDLE", 3)
     BOTTOM = Lane("BOTTOM", 4)
     SUPPORT = Lane("SUPPORT", 5)
 
