@@ -131,6 +131,26 @@ function App() {
   }
 
   useEffect(() => getData());
+  useEffect(() => {
+    if (champions.length > 0) {
+      localStorage.setItem("champions", JSON.stringify(champions));
+    }
+  }, [champions]);
+
+  useEffect(() => {
+    let localStorageRolledChampion = localStorage.getItem("rolledChampion");
+    if (localStorageRolledChampion != null) {
+      setRolledChampion(JSON.parse(localStorageRolledChampion));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (rolledChampion != null) {
+      localStorage.setItem("rolledChampion", JSON.stringify(rolledChampion));
+    } else {
+      localStorage.removeItem("rolledChampion");
+    }
+  }, [rolledChampion]);
 
   function reset() {
     let _champions = champions.slice();
@@ -160,7 +180,7 @@ function App() {
   }
 
   function handleLoss(championName) {
-    let _champions = champions;
+    let _champions = champions.slice();
     let championIndex = _champions.findIndex((el) => el.name == championName);
     if (championIndex != -1) {
       _champions[championIndex].enabled = false;
