@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import Champions from "./components/Champions";
 import NavBar from "./components/NavBar";
 import Roles from "./components/Roles";
+import RollResult from "./components/RollResult";
 function App() {
   let [champions, setChampions] = useState([]);
+  let [rolledChampion, setRolledChampion] = useState();
 
   const defaultRoles = [
     {
@@ -89,7 +91,6 @@ function App() {
             _champions[i].enabled = true;
             _champions[i].display = true;
           }
-          console.log(getEnabledRoles());
           const localStorageChampions = getLocalStorageChampions();
           if (localStorageChampions != null) {
             for (let i = 0; i < localStorageChampions.length; i++) {
@@ -106,10 +107,6 @@ function App() {
           displayChampionsByRole(_champions);
         });
     }
-  }
-
-  function getEnabledRoles() {
-    return roles.filter((el) => el.enabled == true);
   }
 
   function handleChampionClick(championName) {
@@ -151,6 +148,25 @@ function App() {
     setRoles(_roles);
     setLocalStorageChampions(_champions);
     setRolesLocalStorage();
+    setRolledChampion(null);
+  }
+
+  function rollChampion() {
+    const enabledChampions = champions
+      .slice()
+      .filter((el) => el.enabled && el.display);
+    const randomNumber = Math.floor(Math.random() * enabledChampions.length);
+    setRolledChampion(enabledChampions[randomNumber]);
+  }
+
+  function handleLoss(championName) {
+    let _champions = champions;
+    let championIndex = _champions.findIndex((el) => el.name == championName);
+    if (championIndex != -1) {
+      _champions[championIndex].enabled = false;
+      setRolledChampion(_champions[championIndex]);
+    }
+    setChampions(_champions);
   }
 
   return (
@@ -160,7 +176,17 @@ function App() {
         roles={roles}
         handleRoleClick={handleRoleClick}
         handleResetClick={reset}
+        handleRollClick={rollChampion}
       ></Roles>
+      {rolledChampion != null && (
+        <>
+          <hr className="uk-divider-icon"></hr>
+          <RollResult
+            champion={rolledChampion}
+            handleLoss={handleLoss}
+          ></RollResult>
+        </>
+      )}
       <hr className="uk-divider-icon"></hr>
       <Champions
         champions={champions}
