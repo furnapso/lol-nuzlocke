@@ -1,0 +1,16 @@
+name: release-dist
+on:
+  push:
+    branches:
+      - release
+
+steps:
+  - uses: actions/checkout@v3
+  - uses: actions/setup-python@v4
+    with:
+      python-version: "3.11"
+  - run: |
+    pip install -U pip
+    pip install poetry==1.4.0
+    cd backend
+    poetry export --without-hashes --format=requirements.txt > requirements.txt
