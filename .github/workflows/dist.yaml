@@ -13,6 +13,6 @@ jobs:
         with:
           python-version: "3.11"
       - run: |
-        pip install poetry==1.4.0
-        cd backend/
-        poetry export --without-hashes --format=requirements.txt > requirements.txt
+          pip install poetry==1.4.0
+          cd backend/
+          poetry export --without-hashes --format=requirements.txt > requirements.txt
