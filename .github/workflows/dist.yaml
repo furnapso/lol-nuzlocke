@@ -14,5 +14,11 @@ jobs:
           python-version: "3.11"
       - name: install poetry
         run: pip install poetry==1.4.0
+      - run: mkdir dist
       - run: poetry export --without-hashes --format=requirements.txt > requirements.txt
         working-directory: backend
+      - run: npm run build
+        working-directory: frontend
+      - run: |
+        cp backend/src dist/backend
+        cp frontend/dist dist/frontend
