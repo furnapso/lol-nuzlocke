@@ -15,8 +15,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: "19.8.1"
-      - name: install poetry
-        run: pip install poetry==1.4.0
+      - run: pip install poetry==1.4.0
       - run: mkdir dist
       - run: poetry export --without-hashes --format=requirements.txt > requirements.txt
         working-directory: backend
@@ -27,3 +26,9 @@ jobs:
       - run: |
           cp -r backend/src dist/backend
           cp -r frontend/dist dist/frontend
+          tar -czvf dist/release.tar.gz /dist
+      - uses: actions/upload-artifact@v3
+        with:
+          name: release.{{github.run_number}}
+          path: dist/release.tar.gz
+          if-no-files-found: error
