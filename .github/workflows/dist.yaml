@@ -9,11 +9,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: install python and poetry
-        - uses: actions/checkout@v3
-        - uses: actions/setup-python@v4
+        uses: actions/checkout@v3
+        uses: actions/setup-python@v4
           with:
             python-version: "3.11"
-        - run: pip install poetry==1.4.0
+        run: pip install poetry==1.4.0
       - name: export requirements.txt
-        - run: poetry export --without-hashes --format=requirements.txt > requirements.txt
+        run: poetry export --without-hashes --format=requirements.txt > requirements.txt
           working-directory: backend
