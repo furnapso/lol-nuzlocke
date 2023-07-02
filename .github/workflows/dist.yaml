@@ -29,6 +29,6 @@ jobs:
           tar -czvf dist/release.tar.gz /dist
       - uses: actions/upload-artifact@v3
         with:
-          name: release.{{github.run_number}}
+          name: release.{{github.run_number}}.tar.gz
           path: dist/release.tar.gz
           if-no-files-found: error
