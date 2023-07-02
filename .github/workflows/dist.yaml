@@ -8,11 +8,11 @@ jobs:
   dist:
     runs-on: ubuntu-latest
     steps:
+      - name: build python requirements.txt
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
         with:
           python-version: "3.11"
-      - run: |
-          pip install poetry==1.4.0
-          cd backend/
-          poetry export --without-hashes --format=requirements.txt > requirements.txt
+        run: pip install poetry==1.4.0
+      - run: poetry export --without-hashes --format=requirements.txt > requirements.txt
+        working-directory: backend
