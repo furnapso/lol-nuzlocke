@@ -26,7 +26,7 @@ jobs:
       - run: |
           cp -r backend/src dist/backend
           cp -r frontend/dist dist/frontend
-          tar -czvf dist/release.tar.gz /dist
+          tar -czvf dist/release.tar.gz dist
       - uses: actions/upload-artifact@v3
         with:
           name: release.{{github.run_number}}.tar.gz
