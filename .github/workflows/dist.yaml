@@ -9,6 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/setup-python@v4
         with:
           python-version: "3.11"
@@ -32,10 +34,4 @@ jobs:
           name: release-${{ github.run_number }}.tar.gz
           path: release.tar.gz
           if-no-files-found: error
-  tag:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - run: |
-          git tag ${{github.run_number}}
-          git push
+      - run: git tag release-${{ github.run_number }} && git push origin
