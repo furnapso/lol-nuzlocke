@@ -25,5 +25,5 @@ jobs:
           npm run build
         working-directory: frontend
       - run: |
-          cp backend/src dist/backend
-          cp frontend/dist dist/frontend
+          cp -r backend/src dist/backend
+          cp -r frontend/dist dist/frontend
