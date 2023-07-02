@@ -34,4 +34,8 @@ jobs:
           name: release-${{ github.run_number }}.tar.gz
           path: release.tar.gz
           if-no-files-found: error
-      - run: git tag release-${{ github.run_number }} && git push origin
+      - run: |
+          git config --global user.name "Github Actions"
+          git config --global user.email "noreply@github.com"
+          git tag release-${{github.run_number}}
+          git push
