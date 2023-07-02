@@ -1,9 +1,14 @@
-name: release-dist
+name: release-build
 on:
   push:
     branches:
       - release
   workflow_dispatch:
+    inputs:
+      test:
+        description: test
+        required: false
+        type: string
 
 env:
   RELEASE_VER: release-${{github.run_number}}
