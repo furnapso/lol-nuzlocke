@@ -52,7 +52,7 @@ jobs:
         with:
           token: ${{ secrets.ACCESS_TOKEN }}
       - run: |
-          git fetch
+          git fetch --unshallow
           git switch main
           git merge origin/release
           git push
