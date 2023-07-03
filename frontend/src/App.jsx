@@ -11,32 +11,32 @@ function App() {
     {
       name: "Bottom",
       enabled: true,
-      imageEnabled: "src/assets/icon-position-bottom.png",
-      imageDisabled: "src/assets/icon-position-bottom-disabled.png",
+      imageEnabled: "/images/icon-position-bottom.png",
+      imageDisabled: "/images/icon-position-bottom-disabled.png",
     },
     {
       name: "Jungle",
       enabled: true,
-      imageEnabled: "src/assets/icon-position-jungle.png",
-      imageDisabled: "src/assets/icon-position-jungle-disabled.png",
+      imageEnabled: "/images/icon-position-jungle.png",
+      imageDisabled: "/images/icon-position-jungle-disabled.png",
     },
     {
       name: "Middle",
       enabled: true,
-      imageEnabled: "src/assets/icon-position-middle.png",
-      imageDisabled: "src/assets/icon-position-middle-disabled.png",
+      imageEnabled: "/images/icon-position-middle.png",
+      imageDisabled: "/images/icon-position-middle-disabled.png",
     },
     {
       name: "Top",
       enabled: true,
-      imageEnabled: "src/assets/icon-position-top.png",
-      imageDisabled: "src/assets/icon-position-top-disabled.png",
+      imageEnabled: "/images/icon-position-top.png",
+      imageDisabled: "/images/icon-position-top-disabled.png",
     },
     {
       name: "Support",
       enabled: true,
-      imageEnabled: "src/assets/icon-position-utility.png",
-      imageDisabled: "src/assets/icon-position-utility-disabled.png",
+      imageEnabled: "/images/icon-position-utility.png",
+      imageDisabled: "/images/icon-position-utility-disabled.png",
     },
   ];
 
