@@ -6,8 +6,7 @@ import RollResult from "./components/RollResult";
 function App() {
   let [champions, setChampions] = useState([]);
   let [rolledChampion, setRolledChampion] = useState();
-
-  const defaultRoles = [
+  let [roles, setRoles] = useState([
     {
       name: "Bottom",
       enabled: true,
@@ -38,136 +37,106 @@ function App() {
       imageEnabled: "/images/icon-position-utility.png",
       imageDisabled: "/images/icon-position-utility-disabled.png",
     },
-  ];
+  ]);
 
-  let localStorageRoles = localStorage.getItem("roles");
-  let [roles, setRoles] = useState(
-    localStorageRoles == null ? defaultRoles : JSON.parse(localStorageRoles)
-  );
+  useEffect(function getChampions() {
+    fetch("http://localhost:8000/championSummary")
+      .then((r) => r.json())
+      .then((d) => {
+        const _champions = d.slice();
+        for (let index in _champions) {
+          _champions[index].enabled = true;
+          _champions[index].display = true;
+        }
+        setChampions(_champions);
+      });
+  }, []);
 
-  function handleRoleClick(role) {
-    let _roles = roles.slice();
-
-    for (let i = 0; i < _roles.length; i++) {
-      if (_roles[i].name == role) {
-        _roles[i].enabled = !_roles[i].enabled;
-        break;
+  useEffect(function getLocalRoles() {
+    let rolesLocal = localStorage.getItem("roles");
+    if (rolesLocal != null) {
+      rolesLocal = JSON.parse(rolesLocal);
+    }
+    if (rolesLocal != null && rolesLocal.length > 0) {
+      let _roles = roles.slice();
+      for (let role in rolesLocal) {
+        const roleIndex = _roles.findIndex(
+          (r) => r.name == rolesLocal[role].name
+        );
+        if (roleIndex != -1) {
+          _roles[roleIndex].enabled = rolesLocal[role].enabled;
+        }
+        setRoles(_roles);
       }
-    }
-
-    setRoles(_roles);
-    setRolesLocalStorage();
-    displayChampionsByRole(champions);
-  }
-
-  function displayChampionsByRole(champions) {
-    let enabledRoles = roles
-      .filter((el) => el.enabled)
-      .map((el) => el.name.toUpperCase());
-    let _champions = champions.slice();
-
-    for (let i = 0; i < _champions.length; i++) {
-      if (!_champions[i].lanes.some((el) => enabledRoles.indexOf(el) != -1)) {
-        _champions[i].display = false;
-      } else {
-        _champions[i].display = true;
-      }
-    }
-
-    setChampions(_champions);
-  }
-
-  function setRolesLocalStorage() {
-    localStorage.setItem("roles", JSON.stringify(roles));
-  }
-
-  function getData() {
-    if (champions.length == 0) {
-      fetch("http://localhost:8000/championSummary")
-        .then((r) => r.json())
-        .then((d) => {
-          const _champions = d.slice();
-          for (let i = 0; i < _champions.length; i++) {
-            _champions[i].enabled = true;
-            _champions[i].display = true;
-          }
-          const localStorageChampions = getLocalStorageChampions();
-          if (localStorageChampions != null) {
-            for (let i = 0; i < localStorageChampions.length; i++) {
-              let championIndex = _champions.findIndex(
-                (el) => el.name == localStorageChampions[i].name
-              );
-              if (championIndex != -1) {
-                _champions[i].enabled = localStorageChampions[i].enabled;
-              }
-            }
-          }
-          setChampions(_champions);
-          setLocalStorageChampions(_champions);
-          displayChampionsByRole(_champions);
-        });
-    }
-  }
-
-  function handleChampionClick(championName) {
-    let _champions = champions.slice();
-    let championIndex = _champions.findIndex((el) => el.name == championName);
-    if (championIndex != -1) {
-      _champions[championIndex].enabled = !_champions[championIndex].enabled;
-    }
-    setChampions(_champions);
-    setLocalStorageChampions(_champions);
-  }
-
-  function getLocalStorageChampions() {
-    let localStorageChampions = localStorage.getItem("champions");
-    if (localStorageChampions != null) {
-      return JSON.parse(localStorageChampions);
-    }
-  }
-
-  function setLocalStorageChampions(champions) {
-    localStorage.setItem("champions", JSON.stringify(champions));
-  }
-
-  useEffect(() => getData());
-  useEffect(() => {
-    if (champions.length > 0) {
-      localStorage.setItem("champions", JSON.stringify(champions));
-    }
-  }, [champions]);
-
-  useEffect(() => {
-    let localStorageRolledChampion = localStorage.getItem("rolledChampion");
-    if (localStorageRolledChampion != null) {
-      setRolledChampion(JSON.parse(localStorageRolledChampion));
     }
   }, []);
 
-  useEffect(() => {
-    if (rolledChampion != null) {
-      localStorage.setItem("rolledChampion", JSON.stringify(rolledChampion));
-    } else {
-      localStorage.removeItem("rolledChampion");
+  useEffect(
+    function saveRoles() {
+      if (roles != null && roles.length > 0) {
+        localStorage.setItem("roles", JSON.stringify(roles));
+      }
+    },
+    [roles]
+  );
+
+  useEffect(
+    function saveChampions() {
+      if (champions != null && champions.length > 0) {
+        localStorage.setItem("champions", JSON.stringify(champions));
+      }
+    },
+    [champions]
+  );
+
+  useEffect(
+    function displayChampionsByRole() {
+      if (
+        champions != null &&
+        champions.length > 0 &&
+        roles != null &&
+        roles.length > 0
+      ) {
+        const enabledRoles = roles
+          .filter((el) => el.enabled)
+          .map((el) => el.name.toUpperCase());
+        const _champions = champions.slice();
+        for (let champion in _champions) {
+          _champions[champion].display = _champions[champion].lanes.some(
+            (el) => enabledRoles.indexOf(el) != -1
+          );
+        }
+        setChampions(_champions);
+      }
+    },
+    [roles]
+  );
+
+  function handleChampionClick(championName) {
+    const _champions = champions.slice();
+    for (let champion in _champions) {
+      if (championName == _champions[champion].name) {
+        _champions[champion].enabled = !_champions[champion].enabled;
+        break;
+      }
     }
-  }, [rolledChampion]);
+    setChampions(_champions);
+  }
 
   function reset() {
-    let _champions = champions.slice();
-    for (let i = 0; i < _champions.length; i++) {
-      _champions[i].enabled = true;
-      _champions[i].display = true;
+    const _champions = champions.slice();
+    for (let champion in _champions) {
+      _champions[champion].enabled = true;
+      _champions[champion].display = true;
     }
 
-    let _roles = roles.slice();
-    for (let i = 0; i < _roles.length; i++) {
-      _roles[i].enabled = true;
+    const _roles = roles.slice();
+    for (let role in _roles) {
+      _roles[role].enabled = true;
     }
 
     setChampions(_champions);
     setRoles(_roles);
-    setLocalStorageChampions(_champions);
-    setRolesLocalStorage();
     setRolledChampion(null);
   }
 
@@ -180,13 +149,26 @@ function App() {
   }
 
   function handleLoss(championName) {
-    let _champions = champions.slice();
-    let championIndex = _champions.findIndex((el) => el.name == championName);
-    if (championIndex != -1) {
-      _champions[championIndex].enabled = false;
-      setRolledChampion(_champions[championIndex]);
+    const _champions = champions.slice();
+    for (let champion in champions) {
+      if (champions[champion].name == championName) {
+        champions[champion].enabled = false;
+        setRolledChampion(champions[champion]);
+        break;
+      }
     }
     setChampions(_champions);
+  }
+
+  function handleRoleClick(roleName) {
+    const _roles = roles.slice();
+    for (let role in _roles) {
+      if (_roles[role].name == roleName) {
+        _roles[role].enabled = !_roles[role].enabled;
+        break;
+      }
+    }
+    setRoles(_roles);
   }
 
   return (
