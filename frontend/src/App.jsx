@@ -110,6 +110,30 @@ function App() {
 
   useEffect(displayChampionsByRole, [roles]);
 
+  useEffect(function loadRolledChampion() {
+    let localRolledChampion = localStorage.getItem("rolledChampion");
+    if (localRolledChampion != null) {
+      try {
+        localRolledChampion = JSON.parse(localRolledChampion);
+        console.log("Local rolled champion: " + localRolledChampion.name);
+        setRolledChampion(localRolledChampion);
+      } catch (error) {
+        setRolledChampion(null);
+      }
+    }
+  }, []);
+
+  useEffect(
+    function saveRolledChampion() {
+      if (rolledChampion == null) {
+        localStorage.removeItem("rolledChampion");
+      } else {
+        localStorage.setItem("rolledChampion", JSON.stringify(rolledChampion));
+      }
+    },
+    [rolledChampion]
+  );
+
   function handleChampionClick(championName) {
     const _champions = champions.slice();
     for (let champion in _champions) {
@@ -176,7 +200,6 @@ function App() {
       roles != null &&
       roles.length > 0
     ) {
-      debugger;
       const enabledRoles = roles
         .filter((el) => el.enabled)
         .map((el) => el.name.toUpperCase());
