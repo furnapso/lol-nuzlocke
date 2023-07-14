@@ -33,6 +33,7 @@ jobs:
       - run: |
           cp -r backend/src/lol_nuzlocke_backend/* dist
           cp -r frontend/dist dist/frontend
+          mv backend/requirements.txt dist/requirements.txt
           docker build -t ${{env.DOCKER_IMAGE_NAME}} .
       - uses: actions/upload-artifact@v3
         with:
