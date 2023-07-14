@@ -4,6 +4,10 @@ import NavBar from "./components/NavBar";
 import Roles from "./components/Roles";
 import RollResult from "./components/RollResult";
 function App() {
+  let BASE_URL = "";
+  if (process.env.NODE_ENV == "development") {
+    BASE_URL = "http://localhost:8000";
+  }
   let [champions, setChampions] = useState([]);
   let [rolledChampion, setRolledChampion] = useState();
   let [roles, setRoles] = useState([
@@ -40,7 +44,7 @@ function App() {
   ]);
 
   useEffect(function getChampions() {
-    fetch("http://localhost:8000/championSummary")
+    fetch(BASE_URL + "/championSummary")
       .then((r) => r.json())
       .then((d) => {
         const _champions = d.slice();
@@ -48,7 +52,22 @@ function App() {
           _champions[index].enabled = true;
           _champions[index].display = true;
         }
+
+        let localChampions = localStorage.getItem("champions");
+        if (localChampions != null) {
+          localChampions = JSON.parse(localChampions);
+          for (let champion in localChampions) {
+            const index = _champions.findIndex(
+              (el) => el.name == localChampions[champion].name
+            );
+            if (index != -1) {
+              _champions[index].enabled = localChampions[champion].enabled;
+              _champions[index].display = localChampions[champion].display;
+            }
+          }
+        }
         setChampions(_champions);
+        displayChampionsByRole();
       });
   }, []);
 
@@ -89,28 +108,7 @@ function App() {
     [champions]
   );
 
-  useEffect(
-    function displayChampionsByRole() {
-      if (
-        champions != null &&
-        champions.length > 0 &&
-        roles != null &&
-        roles.length > 0
-      ) {
-        const enabledRoles = roles
-          .filter((el) => el.enabled)
-          .map((el) => el.name.toUpperCase());
-        const _champions = champions.slice();
-        for (let champion in _champions) {
-          _champions[champion].display = _champions[champion].lanes.some(
-            (el) => enabledRoles.indexOf(el) != -1
-          );
-        }
-        setChampions(_champions);
-      }
-    },
-    [roles]
-  );
+  useEffect(displayChampionsByRole, [roles]);
 
   function handleChampionClick(championName) {
     const _champions = champions.slice();
@@ -169,6 +167,27 @@ function App() {
       }
     }
     setRoles(_roles);
+  }
+
+  function displayChampionsByRole() {
+    if (
+      champions != null &&
+      champions.length > 0 &&
+      roles != null &&
+      roles.length > 0
+    ) {
+      debugger;
+      const enabledRoles = roles
+        .filter((el) => el.enabled)
+        .map((el) => el.name.toUpperCase());
+      const _champions = champions.slice();
+      for (let champion in _champions) {
+        _champions[champion].display = _champions[champion].lanes.some(
+          (el) => enabledRoles.indexOf(el) != -1
+        );
+      }
+      setChampions(_champions);
+    }
   }
 
   return (
