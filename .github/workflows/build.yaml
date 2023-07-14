@@ -7,7 +7,7 @@ on:
 
 env:
   RELEASE_VER: release-${{github.run_number}}
-  DOCKER_IMAGE_NAME: lol-nuzlocke-release-${{github.run_number}}
+  DOCKER_IMAGE_NAME: unstuck2064/lolnuzlocke:release-${{github.run_number}}
 
 jobs:
   dist:
@@ -33,14 +33,10 @@ jobs:
       - run: |
           cp -r backend/src/lol_nuzlocke_backend/* dist
           cp -r frontend/dist dist/frontend
-          mv backend/requirements.txt dist/requirements.txt
+          cp backend/requirements.txt dist/requirements.txt
           docker build -t ${{env.DOCKER_IMAGE_NAME}} .
-          docker save ${{env.DOCKER_IMAGE_NAME}} | gzip > ${{env.DOCKER_IMAGE_NAME}}.tar.gz
-      - uses: actions/upload-artifact@v3
-        with:
-          name: ${{ env.DOCKER_IMAGE_NAME }}.tar.gz
-          path: ${{env.DOCKER_IMAGE_NAME}}.tar.gz
-          if-no-files-found: error
+          docker login -u ${{vars.DOCKER_USER}} -p ${{secrets.DOCKER_TOKEN}}
+          docker push ${{env.DOCKER_IMAGE_NAME}}
       - run: |
           git config --global user.name "Github Actions"
           git config --global user.email "noreply@github.com"
