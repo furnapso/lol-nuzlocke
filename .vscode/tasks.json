@@ -14,7 +14,17 @@
     {
       "label": "app",
       "type": "shell",
-      "dependsOn": ["frontend", "backend"]
+      "dependsOn": ["backend", "frontend"]
+    },
+    {
+      "label": "dist",
+      "type": "shell",
+      "command": "remove-item -recurse dist;mkdir dist;cd frontend && npm run build;cd .. && copy-item -recurse frontend/dist dist/frontend;cd backend && poetry export --without-hashes --format=requirements.txt > requirements.txt;cd .. && copy-item -recurse backend/src/lol_nuzlocke_backend/* dist;move-item backend/requirements.txt dist/requirements.txt"
+    },
+    {
+      "label": "build docker image",
+      "type": "shell",
+      "command": "docker build -t myimage ."
     }
   ]
 }
