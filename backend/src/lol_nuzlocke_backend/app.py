@@ -1,18 +1,18 @@
+import logging
+import os
+
 import community_dragon
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from wiki.lanes import LANES
 
-origins = ["http://localhost:5173"]
+ENVIRONMENT = os.getenv("NUZLOCKE_ENVIRONMENT")
 
 app = FastAPI()
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+logging.basicConfig()
+
+logger = logging.getLogger("app.py")
 
 
 @app.get("/championSummary")
@@ -33,3 +33,21 @@ async def champion_icon(champion_id: int):
 @app.get("/championRoles")
 async def champion_roles():
     return LANES
+
+
+if ENVIRONMENT == "PROD":
+    logging.info("Environment is PROD, mounting static files")
+    app.mount("/", StaticFiles(directory="frontend", html=True), name="static")
+else:
+    logging.info(
+        "Environment is non-prod, adding cross-origins configuration for node dev server"
+    )
+    origins = ["http://localhost:5173"]
+
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=origins,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
