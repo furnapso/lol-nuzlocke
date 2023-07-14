@@ -35,11 +35,11 @@ jobs:
           cp -r frontend/dist dist/frontend
           mv backend/requirements.txt dist/requirements.txt
           docker build -t ${{env.DOCKER_IMAGE_NAME}} .
-          docker save ${{env.DOCKER_IMAGE_NAME}} > ${{env.DOCKER_IMAGE_NAME}}.tar
+          docker save ${{env.DOCKER_IMAGE_NAME}} | gzip ${{env.DOCKER_IMAGE_NAME}}.tar.gz
       - uses: actions/upload-artifact@v3
         with:
-          name: ${{ env.DOCKER_IMAGE_NAME }}.tar
-          path: ${{env.DOCKER_IMAGE_NAME}}.tar
+          name: ${{ env.DOCKER_IMAGE_NAME }}.tar.gz
+          path: ${{env.DOCKER_IMAGE_NAME}}.tar.gz
           if-no-files-found: error
       - run: |
           git config --global user.name "Github Actions"
