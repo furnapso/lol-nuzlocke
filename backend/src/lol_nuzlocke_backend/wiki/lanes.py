@@ -1,3 +1,4 @@
+import logging
 from enum import Enum
 from typing import List, NamedTuple
 
@@ -5,6 +6,8 @@ import requests
 from bs4 import BeautifulSoup, Tag
 from constants import LOL_WIKI_ROLES_PATH, REQUEST_TIMEOUT
 from pydantic import BaseModel
+
+logger = logging.getLogger("lanes.py")
 
 
 class Lane(NamedTuple):
@@ -24,6 +27,8 @@ class ChampionLanes(BaseModel):
     champion_name: str
     lanes: List[str]
 
+
+logger.info("Getting lanes")
 
 response = requests.get(LOL_WIKI_ROLES_PATH, timeout=REQUEST_TIMEOUT)
 LANES: List[ChampionLanes] = []
@@ -45,3 +50,8 @@ if response.status_code == 200:
             LANES.append(
                 ChampionLanes(champion_name=champion_name, lanes=champion_roles)
             )
+    logger.info("Found %s lanes", len(LANES))
+else:
+    logger.error(
+        "Failed to get lanes from wiki. Response code: %s", response.status_code
+    )
