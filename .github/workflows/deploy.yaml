@@ -7,7 +7,7 @@ on:
         type: string
         required: true
 env:
-  DOCKER_IMAGE_NAME: ${{vars.DOCKER_REPO_NAME}}/lolnuzlocke:${{inputs.release_name}}
+  DOCKER_IMAGE_NAME: ${{vars.DOCKER_USER}}/${{vars.DOCKER_REPO_NAME}}:${{inputs.release_name}}
   DOCKER_TOKEN: ${{secrets.DOCKER_TOKEN}}
   DOCKER_USER: ${{vars.DOCKER_USER}}
 
