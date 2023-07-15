@@ -7,9 +7,6 @@ on:
         type: string
         required: true
 env:
-  SSH_KEY: ${{secrets.DIGITAL_OCEAN_SSH_KEY}}
-  SSH_HOST: ${{secrets.DIGITAL_OCEAN_HOST}}
-  SSH_USER: ${{secrets.DIGITAL_OCEAN_USERNAME}}
   DOCKER_IMAGE_NAME: ${{vars.DOCKER_REPO_NAME}}/lolnuzlocke:${{inputs.release_name}}
 
 jobs:
@@ -23,8 +20,7 @@ jobs:
           port: 22
           key: ${{secrets.DIGITAL_OCEAN_SSH_KEY}}
           script: |
-            echo 'hello world'
             docker ps -q --filter "name=lolnuzlocke" | xargs -r docker stop
             docker ps -aq --filter "name=lolnuzlocke" | xargs -r docker rm
-            docker pull ${{env.DOCKER_IMAGE_NAME}}
+            docker pull unstuck2064/lolnuzlocke:release-11
             docker run -d --name lolnuzlocke -p 80:80 -e NUZLOCKE_ENVIRONMENT=PROD ${{env.DOCKER_IMAGE_NAME}}
