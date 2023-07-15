@@ -27,4 +27,4 @@ jobs:
             docker ps -q --filter "name=lolnuzlocke" | xargs -r docker stop
             docker ps -aq --filter "name=lolnuzlocke" | xargs -r docker rm
             docker pull $DOCKER_IMAGE_NAME
-            docker run -d --name lolnuzlocke -p 80:80 -e NUZLOCKE_ENVIRONMENT=PROD $DOCKER_IMAGE_NAME
+            docker run -d --name lolnuzlocke -p 8080:80 -e NUZLOCKE_ENVIRONMENT=PROD $DOCKER_IMAGE_NAME
