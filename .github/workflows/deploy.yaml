@@ -16,9 +16,6 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: webfactory/ssh-agent@v0.7.0
-        with:
-          ssh-private-key: ${{secrets.DIGITAL_OCEAN_SSH_KEY}}
       - run: mkdir -p ~/.ssh
       - run: touch ~/.ssh/config
       - run: touch ~/.ssh/known_hosts
@@ -28,6 +25,7 @@ jobs:
           host: ${{ secrets.DIGITAL_OCEAN_HOST }}
           username: ${{ secrets.DIGITAL_OCEAN_USERNAME }}
           port: 22
+          key: ${{secrets.DIGITAL_OCEAN_SSH_KEY}}
           script: |
             docker ps -q --filter "name=lolnuzlocke" | xargs -r docker stop
             docker ps -aq --filter "name=lolnuzlocke" | xargs -r docker rm
