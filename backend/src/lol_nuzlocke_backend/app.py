@@ -42,21 +42,10 @@ if ENVIRONMENT == "PROD":
     logger.info("Environment is PROD, mounting static files")
     app.mount("/", StaticFiles(directory="frontend", html=True), name="static")
 
-    if ORIGINS_HOST is not None:
-        logger.info("Adding origins host for prod server")
-        origins = [ORIGINS_HOST]
-
-else:
-    logger.info(
-        "Environment is non-prod, adding cross-origins configuration for node dev server"
-    )
-    origins = ["http://localhost:5173"]
-
-if origins is not None and len(origins) > 0:
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origins=origins,
-        allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
-    )
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
