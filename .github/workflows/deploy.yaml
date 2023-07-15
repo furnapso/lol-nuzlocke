@@ -10,6 +10,7 @@ env:
   SSH_KEY: ${{secrets.DIGITAL_OCEAN_SSH_KEY}}
   SSH_HOST: ${{secrets.DIGITAL_OCEAN_HOST}}
   SSH_USER: ${{secrets.DIGITAL_OCEAN_USERNAME}}
+  DOCKER_IMAGE_NAME: ${{vars.DOCKER_REPO_NAME}}/lolnuzlocke:latest
 
 jobs:
   deploy:
@@ -22,4 +23,7 @@ jobs:
       - run: touch ~/.ssh/config
       - run: touch ~/.ssh/known_hosts
       - run: ssh-keyscan $SSH_HOST >> ~/.ssh/known_hosts
-      - run: ssh $SSH_USER@$SSH_HOST touch /home/lolnuzlocke/helloworld.txt
+      - run: ssh $SSH_USER@$SSH_HOST docker login -u ${{vars.DOCKER_USER}} -p ${{secrets.DOCKER_TOKEN}}
+      - run: ssh $SSH_USER@$SSH_HOST docker stop lolnuzlocke
+      - run: ssh $SSH_USER@$SSH_HOST docker pull $DOCKER_IMAGE_NAME
+      - run: ssh $SSH_USER@$SSH_HOST docker run -d --name lolnuzlocke -p 80:80 -e NUZLOCKE_ENVIRONMENT=PROD $DOCKER_IMAGE_NAME
