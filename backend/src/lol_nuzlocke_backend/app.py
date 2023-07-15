@@ -1,5 +1,6 @@
 import logging
 import os
+from typing import Optional
 
 import community_dragon
 from fastapi import FastAPI
@@ -8,6 +9,8 @@ from fastapi.staticfiles import StaticFiles
 from wiki.lanes import LANES
 
 ENVIRONMENT = os.getenv("NUZLOCKE_ENVIRONMENT")
+ORIGINS_HOST = os.getenv("NUZLOCKE_ORIGINS_HOST")
+origins: Optional[list[str]] = None
 
 app = FastAPI()
 logging.basicConfig()
@@ -36,14 +39,20 @@ async def champion_roles():
 
 
 if ENVIRONMENT == "PROD":
-    logging.info("Environment is PROD, mounting static files")
+    logger.info("Environment is PROD, mounting static files")
     app.mount("/", StaticFiles(directory="frontend", html=True), name="static")
+
+    if ORIGINS_HOST is not None:
+        logger.info("Adding origins host for prod server")
+        origins = [ORIGINS_HOST]
+
 else:
-    logging.info(
+    logger.info(
         "Environment is non-prod, adding cross-origins configuration for node dev server"
     )
     origins = ["http://localhost:5173"]
 
+if origins is not None and len(origins) > 0:
     app.add_middleware(
         CORSMiddleware,
         allow_origins=origins,
