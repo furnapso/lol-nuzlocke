@@ -8,6 +8,8 @@ on:
         required: true
 env:
   DOCKER_IMAGE_NAME: ${{vars.DOCKER_REPO_NAME}}/lolnuzlocke:${{inputs.release_name}}
+  DOCKER_TOKEN: ${{secrets.DOCKER_TOKEN}}
+  DOCKER_USER: ${{vars.DOCKER_USER}}
 
 jobs:
   deploy:
@@ -19,9 +21,9 @@ jobs:
           username: ${{ secrets.DIGITAL_OCEAN_USERNAME }}
           port: 22
           key: ${{secrets.DIGITAL_OCEAN_SSH_KEY}}
-          envs: DOCKER_IMAGE_NAME
+          envs: DOCKER_IMAGE_NAME,DOCKER_TOKEN,DOCKER_USER
           script: |
-            docker login -u ${{vars.DOCKER_USER}} -p ${{secrets.DOCKER_TOKEN}}
+            docker login -u $DOCKER_USER -p $DOCKER_TOKEN
             docker ps -q --filter "name=lolnuzlocke" | xargs -r docker stop
             docker ps -aq --filter "name=lolnuzlocke" | xargs -r docker rm
             docker pull $DOCKER_IMAGE_NAME
