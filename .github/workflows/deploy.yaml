@@ -1,6 +1,10 @@
 name: deploy-latest
-on: workflow_dispatch
-
+on:
+  workflow_dispatch:
+    inputs:
+      release_name:
+        type: string
+        required: true
 env:
   SSH_KEY: ${{secrets.DIGITAL_OCEAN_SSH_KEY}}
   SSH_HOST: ${{secrets.DIGITAL_OCEAN_HOST}}
