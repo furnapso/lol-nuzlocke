@@ -27,6 +27,7 @@ jobs:
           port: 22
           key: ${{secrets.DIGITAL_OCEAN_SSH_KEY}}
           script: |
+            echo 'hello world'
             docker ps -q --filter "name=lolnuzlocke" | xargs -r docker stop
             docker ps -aq --filter "name=lolnuzlocke" | xargs -r docker rm
             docker pull ${{env.DOCKER_IMAGE_NAME}}
