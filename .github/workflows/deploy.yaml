@@ -23,7 +23,13 @@ jobs:
       - run: touch ~/.ssh/config
       - run: touch ~/.ssh/known_hosts
       - run: ssh-keyscan $SSH_HOST >> ~/.ssh/known_hosts
-      - run: ssh $SSH_USER@$SSH_HOST docker ps -q --filter "name=lolnuzlocke" | xargs -r docker stop
-      - run: ssh $SSH_USER@$SSH_HOST docker ps -aq --filter "name=lolnuzlocke" | xargs -r docker rm
-      - run: ssh $SSH_USER@$SSH_HOST docker pull ${{env.DOCKER_IMAGE_NAME}}
-      - run: ssh $SSH_USER@$SSH_HOST docker run -d --name lolnuzlocke -p 80:80 -e NUZLOCKE_ENVIRONMENT=PROD ${{env.DOCKER_IMAGE_NAME}}
+      - uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.DIGITAL_OCEAN_HOST }}
+          username: ${{ secrets.DIGITAL_OCEAN_USERNAME }}
+          port: 22
+          script: |
+            docker ps -q --filter "name=lolnuzlocke" | xargs -r docker stop
+            docker ps -aq --filter "name=lolnuzlocke" | xargs -r docker rm
+            docker pull ${{env.DOCKER_IMAGE_NAME}}
+            docker run -d --name lolnuzlocke -p 80:80 -e NUZLOCKE_ENVIRONMENT=PROD ${{env.DOCKER_IMAGE_NAME}}
