@@ -9,7 +9,7 @@ env:
   SSH_KEY: ${{secrets.DIGITAL_OCEAN_SSH_KEY}}
   SSH_HOST: ${{secrets.DIGITAL_OCEAN_HOST}}
   SSH_USER: ${{secrets.DIGITAL_OCEAN_USERNAME}}
-  DOCKER_IMAGE_NAME: ${{vars.DOCKER_REPO_NAME}}/lolnuzlocke:latest
+  DOCKER_IMAGE_NAME: ${{vars.DOCKER_REPO_NAME}}/lolnuzlocke:${{inputs.release_name}}
 
 jobs:
   deploy:
