@@ -20,6 +20,7 @@ jobs:
           port: 22
           key: ${{secrets.DIGITAL_OCEAN_SSH_KEY}}
           script: |
+            docker login -u ${{vars.DOCKER_USER}} -p ${{secrets.DOCKER_TOKEN}}
             docker ps -q --filter "name=lolnuzlocke" | xargs -r docker stop
             docker ps -aq --filter "name=lolnuzlocke" | xargs -r docker rm
             docker pull unstuck2064/lolnuzlocke:release-11
