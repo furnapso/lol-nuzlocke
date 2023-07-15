@@ -1,4 +1,4 @@
-name: deploy-latest
+name: deploy
 run-name: deploy ${{inputs.release_name}}
 on:
   workflow_dispatch:
@@ -20,6 +20,7 @@ jobs:
       - run: touch ~/.ssh/config
       - run: touch ~/.ssh/known_hosts
       - run: ssh-keyscan $SSH_HOST >> ~/.ssh/known_hosts
+      - run: echo $SSH_HOST
       - uses: appleboy/ssh-action@v0.1.10
         with:
           host: ${{ secrets.DIGITAL_OCEAN_HOST }}
