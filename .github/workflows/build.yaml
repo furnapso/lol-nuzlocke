@@ -26,18 +26,23 @@ jobs:
       - run: mkdir dist
       - run: poetry export --without-hashes --format=requirements.txt > requirements.txt
         working-directory: backend
-      - run: |
+      - name: frontend build
+        run: |
           npm install
           npm run build
         working-directory: frontend
-      - run: |
+      - name: copy files into dist folder
+        run: |
           cp -r backend/src/lol_nuzlocke_backend/* dist
           cp -r frontend/dist dist/frontend
           cp backend/requirements.txt dist/requirements.txt
+      - name: docker image build and push
+        run: |
           docker build -t ${{env.DOCKER_IMAGE_NAME}} .
           docker login -u ${{vars.DOCKER_USER}} -p ${{secrets.DOCKER_TOKEN}}
           docker push ${{env.DOCKER_IMAGE_NAME}}
-      - run: |
+      - name: git push tag
+        run: |
           git config --global user.name "Github Actions"
           git config --global user.email "noreply@github.com"
           git tag ${{ env.RELEASE_VER }}
