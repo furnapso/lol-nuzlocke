@@ -18,5 +18,5 @@ jobs:
       - run: mkdir -p ~/.ssh
       - run: echo $SSH_KEY > ~/.ssh/id_rsa
       - run: sudo chmod 600 ~/.ssh/id_rsa
-      - run: ssh-keyscan $SSH_HOST
+      - run: ssh-keyscan -t rsa $SSH_HOST >> ~/.ssh/known_hosts
       - run: ssh $SSH_USER@$SSH_HOST touch /home/lolnuzlocke/helloworld.txt
